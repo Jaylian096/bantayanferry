@@ -6,12 +6,20 @@ const pool = mysql.createPool({
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
-  port: process.env.DB_PORT ? parseInt(process.env.DB_PORT) : 3306, // make sure port is a number
+  port: process.env.DB_PORT ? parseInt(process.env.DB_PORT) : 3306,
   waitForConnections: true,
   connectionLimit: 10,
-  queueLimit: 0
+  queueLimit: 0,
+  ssl: {
+    rejectUnauthorized: false  // ← this is the fix for Railway
+  }
 });
 
 const db = pool.promise();
+
+// Test connection on startup
+db.query('SELECT 1')
+  .then(() => console.log('✅ Database connected successfully'))
+  .catch(err => console.error('❌ Database connection failed:', err.message));
 
 module.exports = db;
