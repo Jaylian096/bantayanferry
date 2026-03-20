@@ -22,8 +22,8 @@ app.get('/api/health', (req, res) =>
   res.json({ status: 'OK', message: 'Bantayan Ferry API is running' })
 );
 
-// Serve Cordova frontend
-const frontendPath = path.join(__dirname, 'www'); // adjust if your folder name is different
+// Serve frontend from www folder
+const frontendPath = path.join(__dirname, 'www');
 app.use(express.static(frontendPath));
 
 // Root route serves index.html
@@ -31,7 +31,12 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(frontendPath, 'index.html'));
 });
 
-// Optional: redirect all unknown routes to frontend (single-page app)
+// Route for admin.html
+app.get('/admin', (req, res) => {
+  res.sendFile(path.join(frontendPath, 'admin.html'));
+});
+
+// Catch-all for SPA routing (optional)
 app.get('*', (req, res) => {
   res.sendFile(path.join(frontendPath, 'index.html'));
 });
