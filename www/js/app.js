@@ -9,15 +9,12 @@ const router = {
     const page = document.getElementById(pageId);
     if (page) { page.classList.add('active'); this.current = pageId; }
 
-    // Update ALL nav-item buttons across ALL pages (each page has its own nav bar)
+    // Update ALL nav-item buttons across ALL pages
     const navMap = { 'page-home': 'nav-home', 'page-schedules': 'nav-schedules', 'page-bookings': 'nav-bookings', 'page-profile': 'nav-profile' };
     const activeNavId = navMap[pageId];
     document.querySelectorAll('.nav-item').forEach(n => {
-      if (activeNavId && n.id === activeNavId) {
-        n.classList.add('active');
-      } else {
-        n.classList.remove('active');
-      }
+      if (activeNavId && n.id === activeNavId) n.classList.add('active');
+      else n.classList.remove('active');
     });
 
     window.scrollTo(0, 0);
@@ -63,7 +60,10 @@ document.getElementById('form-login').addEventListener('submit', async (e) => {
   const password = document.getElementById('login-password').value;
   const btn = document.getElementById('btn-login');
   btn.textContent = 'Signing in...'; btn.disabled = true;
-  const res = await api.post('/auth/login', { email, password });
+
+  // ✅ Updated endpoint
+  const res = await api.post('/api/auth/login', { email, password });
+
   btn.textContent = 'Sign In'; btn.disabled = false;
   if (res.ok) {
     localStorage.setItem('bf_token', res.data.token);
@@ -81,7 +81,10 @@ document.getElementById('form-register').addEventListener('submit', async (e) =>
   const contact_number = document.getElementById('reg-contact').value;
   const btn = document.getElementById('btn-register');
   btn.textContent = 'Creating account...'; btn.disabled = true;
-  const res = await api.post('/auth/register', { full_name, email, password, contact_number });
+
+  // ✅ Updated endpoint
+  const res = await api.post('/api/auth/register', { full_name, email, password, contact_number });
+
   btn.textContent = 'Create Account'; btn.disabled = false;
   if (res.ok) {
     localStorage.setItem('bf_token', res.data.token);
@@ -104,7 +107,9 @@ let activeLineFilter = 'all';
 async function loadSchedules() {
   const list = document.getElementById('schedules-list');
   list.innerHTML = '<div class="loading-spinner"><div class="spinner"></div></div>';
-  const res = await api.get('/schedules');
+  
+  // ✅ Updated endpoint
+  const res = await api.get('/api/schedules');
   if (!res.ok) { list.innerHTML = '<div class="empty-state"><div class="empty-icon">⚠️</div><h3>Failed to load schedules</h3></div>'; return; }
   allSchedules = res.data;
   renderSchedules(allSchedules);
@@ -131,10 +136,10 @@ function renderSchedules(schedules) {
     </div>`).join('');
 }
 
-function filterSchedules(lineId) {
+function filterSchedules(lineId, event) {
   activeLineFilter = lineId;
   document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
-  event.target.classList.add('active');
+  if (event) event.target.classList.add('active');
   const filtered = lineId === 'all' ? allSchedules : allSchedules.filter(s => s.shipping_line_id == lineId);
   renderSchedules(filtered);
 }
@@ -151,7 +156,6 @@ function selectSchedule(id) {
 let selectedSchedule = null;
 let selectedPassengerType = 'regular';
 let currentFare = 0;
-
 const paxFareLabels = { regular: 'Regular', student: 'Student', senior_citizen: 'Senior Citizen', pwd: 'PWD', child: 'Child' };
 
 function openBookingForm(sched) {
@@ -184,12 +188,14 @@ async function updateFareDisplay() {
   if (!selectedSchedule) return;
   document.getElementById('fare-passenger-type').textContent = paxFareLabels[selectedPassengerType];
   document.getElementById('fare-amount-display').textContent = '...';
-  const res = await api.get('/admin/fares', true);
+  
+  // ✅ Updated endpoint
+  const res = await api.get('/api/admin/fares', true);
   if (res.ok) {
     const fare = res.data.find(f => f.shipping_line_id === selectedSchedule.shipping_line_id && f.passenger_type === selectedPassengerType);
     if (fare) { currentFare = fare.amount; document.getElementById('fare-amount-display').textContent = `₱${parseFloat(fare.amount).toFixed(2)}`; return; }
   }
-  // Fallback fare table
+  
   const fallback = { regular: 185, student: 140, senior_citizen: 130, pwd: 130, child: 95 };
   currentFare = fallback[selectedPassengerType];
   document.getElementById('fare-amount-display').textContent = `₱${currentFare.toFixed(2)}`;
@@ -199,6 +205,7 @@ document.getElementById('booking-form').addEventListener('submit', async (e) => 
   e.preventDefault();
   const btn = document.getElementById('btn-book-submit');
   btn.textContent = 'Processing...'; btn.disabled = true;
+  
   const payload = {
     schedule_id: parseInt(document.getElementById('booking-schedule-id').value),
     travel_date: document.getElementById('book-date').value,
@@ -206,12 +213,13 @@ document.getElementById('booking-form').addEventListener('submit', async (e) => 
     contact_number: document.getElementById('book-contact').value,
     passenger_type: selectedPassengerType
   };
-  const res = await api.post('/bookings', payload);
+
+  // ✅ Updated endpoint
+  const res = await api.post('/api/bookings', payload);
+
   btn.textContent = 'Confirm Booking'; btn.disabled = false;
-  if (res.ok) {
-    showToast('Booking confirmed! 🎉', 'success');
-    showBookingSuccess(res.data);
-  } else { showToast(res.error, 'error'); }
+  if (res.ok) { showToast('Booking confirmed! 🎉', 'success'); showBookingSuccess(res.data); }
+  else { showToast(res.error, 'error'); }
 });
 
 function showBookingSuccess(data) {
@@ -226,7 +234,9 @@ async function loadMyBookings() {
   if (!api.isLoggedIn()) { router.navigate('page-auth'); return; }
   const list = document.getElementById('my-bookings-list');
   list.innerHTML = '<div class="loading-spinner"><div class="spinner"></div></div>';
-  const res = await api.get('/bookings/my');
+  
+  // ✅ Updated endpoint
+  const res = await api.get('/api/bookings/my');
   if (!res.ok) { list.innerHTML = '<div class="empty-state"><div class="empty-icon">⚠️</div><h3>Failed to load</h3></div>'; return; }
   if (res.data.length === 0) {
     list.innerHTML = '<div class="empty-state"><div class="empty-icon">🎫</div><h3>No bookings yet</h3><p>Book your first ferry ride!</p></div>'; return;
@@ -253,7 +263,8 @@ async function loadMyBookings() {
 }
 
 async function showBookingDetail(id) {
-  const res = await api.get(`/bookings/my/${id}`);
+  // ✅ Updated endpoint
+  const res = await api.get(`/api/bookings/my/${id}`);
   if (!res.ok) { showToast('Failed to load booking', 'error'); return; }
   const b = res.data;
   document.getElementById('detail-code').textContent = b.booking_code;
@@ -287,7 +298,7 @@ function logout() {
   router.navigate('page-auth');
 }
 
-// ===== BOTTOM NAV (Event Delegation - works for ALL nav buttons across ALL pages) =====
+// ===== BOTTOM NAV =====
 document.addEventListener('click', (e) => {
   const btn = e.target.closest('.nav-item');
   if (!btn) return;
