@@ -1,8 +1,9 @@
 /* ===== API HELPER ===== */
-// ⚠️ IMPORTANT: Change this to your live backend URL when deploying to Hostinger
-// For local testing:  'http://localhost:3000/api'
-// For Hostinger/live: 'https://your-backend-domain.com/api'
-const API_BASE = 'https://bantayanferry.onrender.com';
+
+// Automatically detect environment
+const API_BASE = window.location.hostname === 'localhost'
+  ? 'http://localhost:3000'
+  : 'https://bantayanferry.onrender.com';
 
 const api = {
   getToken: () => localStorage.getItem('bf_token'),
