@@ -1,14 +1,4 @@
--- ============================================================
--- BANTAYAN FERRY - MySQL Database Schema
--- ============================================================
-
-CREATE DATABASE IF NOT EXISTS bantayan_ferry;
-USE bantayan_ferry;
-
--- ============================================================
--- USERS TABLE
--- ============================================================
-CREATE TABLE users (
+CREATE TABLE IF NOT EXISTS users (
   id INT AUTO_INCREMENT PRIMARY KEY,
   full_name VARCHAR(100) NOT NULL,
   email VARCHAR(100) UNIQUE NOT NULL,
@@ -19,10 +9,7 @@ CREATE TABLE users (
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
--- ============================================================
--- ADMINS TABLE
--- ============================================================
-CREATE TABLE admins (
+CREATE TABLE IF NOT EXISTS admins (
   id INT AUTO_INCREMENT PRIMARY KEY,
   full_name VARCHAR(100) NOT NULL,
   email VARCHAR(100) UNIQUE NOT NULL,
@@ -33,10 +20,7 @@ CREATE TABLE admins (
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
--- ============================================================
--- SHIPPING LINES TABLE
--- ============================================================
-CREATE TABLE shipping_lines (
+CREATE TABLE IF NOT EXISTS shipping_lines (
   id INT AUTO_INCREMENT PRIMARY KEY,
   name VARCHAR(100) NOT NULL,
   description TEXT,
@@ -44,10 +28,7 @@ CREATE TABLE shipping_lines (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- ============================================================
--- ROUTES TABLE
--- ============================================================
-CREATE TABLE routes (
+CREATE TABLE IF NOT EXISTS routes (
   id INT AUTO_INCREMENT PRIMARY KEY,
   origin VARCHAR(100) NOT NULL,
   destination VARCHAR(100) NOT NULL,
@@ -56,10 +37,7 @@ CREATE TABLE routes (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- ============================================================
--- SHIPS TABLE
--- ============================================================
-CREATE TABLE ships (
+CREATE TABLE IF NOT EXISTS ships (
   id INT AUTO_INCREMENT PRIMARY KEY,
   shipping_line_id INT NOT NULL,
   ship_name VARCHAR(100) NOT NULL,
@@ -69,10 +47,7 @@ CREATE TABLE ships (
   FOREIGN KEY (shipping_line_id) REFERENCES shipping_lines(id) ON DELETE CASCADE
 );
 
--- ============================================================
--- SCHEDULES TABLE
--- ============================================================
-CREATE TABLE schedules (
+CREATE TABLE IF NOT EXISTS schedules (
   id INT AUTO_INCREMENT PRIMARY KEY,
   shipping_line_id INT NOT NULL,
   ship_id INT NOT NULL,
@@ -87,10 +62,7 @@ CREATE TABLE schedules (
   FOREIGN KEY (route_id) REFERENCES routes(id)
 );
 
--- ============================================================
--- FARES TABLE
--- ============================================================
-CREATE TABLE fares (
+CREATE TABLE IF NOT EXISTS fares (
   id INT AUTO_INCREMENT PRIMARY KEY,
   shipping_line_id INT NOT NULL,
   route_id INT NOT NULL,
@@ -103,10 +75,7 @@ CREATE TABLE fares (
   UNIQUE KEY unique_fare (shipping_line_id, route_id, passenger_type)
 );
 
--- ============================================================
--- CARGO RATES TABLE
--- ============================================================
-CREATE TABLE cargo_rates (
+CREATE TABLE IF NOT EXISTS cargo_rates (
   id INT AUTO_INCREMENT PRIMARY KEY,
   shipping_line_id INT NOT NULL,
   cargo_type ENUM('motorcycle','car','truck','others') NOT NULL,
@@ -117,10 +86,7 @@ CREATE TABLE cargo_rates (
   UNIQUE KEY unique_cargo (shipping_line_id, cargo_type)
 );
 
--- ============================================================
--- BOOKINGS TABLE
--- ============================================================
-CREATE TABLE bookings (
+CREATE TABLE IF NOT EXISTS bookings (
   id INT AUTO_INCREMENT PRIMARY KEY,
   booking_reference VARCHAR(20) UNIQUE NOT NULL,
   user_id INT NOT NULL,
@@ -142,69 +108,41 @@ CREATE TABLE bookings (
   FOREIGN KEY (verified_by) REFERENCES admins(id)
 );
 
--- ============================================================
--- SEED DATA
--- ============================================================
-
--- Shipping Lines
+-- Seed Data
 INSERT INTO shipping_lines (name, description) VALUES
 ('Island Shipping', 'Island Shipping Corporation - Bantayan Island'),
 ('Super Shuttle Ferry', 'Super Shuttle Ferry - Fast and reliable service'),
 ('Aznar Shipping', 'Aznar Shipping Lines - Affordable fares');
 
--- Routes
 INSERT INTO routes (origin, destination) VALUES
 ('Hagnaya', 'Santa Fe'),
 ('Santa Fe', 'Hagnaya');
 
--- Ships
 INSERT INTO ships (shipping_line_id, ship_name, capacity) VALUES
-(1, 'MV Island Express', 200),
-(1, 'MV Bantayan Star', 180),
-(2, 'MV Super Shuttle 1', 150),
-(2, 'MV Fast Ferry 2', 160),
-(3, 'MV Aznar Pride', 170),
-(3, 'MV Cebu Aznar', 190);
+(1, 'MV Island Express', 200),(1, 'MV Bantayan Star', 180),
+(2, 'MV Super Shuttle 1', 150),(2, 'MV Fast Ferry 2', 160),
+(3, 'MV Aznar Pride', 170),(3, 'MV Cebu Aznar', 190);
 
--- Schedules
 INSERT INTO schedules (shipping_line_id, ship_id, route_id, departure_time, arrival_time) VALUES
-(1, 1, 1, '05:00:00', '06:30:00'),
-(1, 1, 2, '07:00:00', '08:30:00'),
-(1, 2, 1, '09:00:00', '10:30:00'),
-(1, 2, 2, '11:00:00', '12:30:00'),
-(2, 3, 1, '06:00:00', '07:30:00'),
-(2, 3, 2, '08:00:00', '09:30:00'),
-(2, 4, 1, '13:00:00', '14:30:00'),
-(2, 4, 2, '15:00:00', '16:30:00'),
-(3, 5, 1, '07:30:00', '09:00:00'),
-(3, 5, 2, '10:00:00', '11:30:00'),
-(3, 6, 1, '14:00:00', '15:30:00'),
-(3, 6, 2, '16:00:00', '17:30:00');
+(1,1,1,'05:00:00','06:30:00'),(1,1,2,'07:00:00','08:30:00'),
+(1,2,1,'09:00:00','10:30:00'),(1,2,2,'11:00:00','12:30:00'),
+(2,3,1,'06:00:00','07:30:00'),(2,3,2,'08:00:00','09:30:00'),
+(2,4,1,'13:00:00','14:30:00'),(2,4,2,'15:00:00','16:30:00'),
+(3,5,1,'07:30:00','09:00:00'),(3,5,2,'10:00:00','11:30:00'),
+(3,6,1,'14:00:00','15:30:00'),(3,6,2,'16:00:00','17:30:00');
 
--- Fares
 INSERT INTO fares (shipping_line_id, route_id, passenger_type, fare_amount) VALUES
--- Island Shipping
-(1, 1, 'regular', 185.00), (1, 1, 'student', 155.00), (1, 1, 'senior_citizen', 148.00),
-(1, 1, 'pwd', 148.00), (1, 1, 'child', 100.00),
-(1, 2, 'regular', 185.00), (1, 2, 'student', 155.00), (1, 2, 'senior_citizen', 148.00),
-(1, 2, 'pwd', 148.00), (1, 2, 'child', 100.00),
--- Super Shuttle
-(2, 1, 'regular', 200.00), (2, 1, 'student', 170.00), (2, 1, 'senior_citizen', 160.00),
-(2, 1, 'pwd', 160.00), (2, 1, 'child', 110.00),
-(2, 2, 'regular', 200.00), (2, 2, 'student', 170.00), (2, 2, 'senior_citizen', 160.00),
-(2, 2, 'pwd', 160.00), (2, 2, 'child', 110.00),
--- Aznar Shipping
-(3, 1, 'regular', 175.00), (3, 1, 'student', 145.00), (3, 1, 'senior_citizen', 140.00),
-(3, 1, 'pwd', 140.00), (3, 1, 'child', 90.00),
-(3, 2, 'regular', 175.00), (3, 2, 'student', 145.00), (3, 2, 'senior_citizen', 140.00),
-(3, 2, 'pwd', 140.00), (3, 2, 'child', 90.00);
+(1,1,'regular',185.00),(1,1,'student',155.00),(1,1,'senior_citizen',148.00),(1,1,'pwd',148.00),(1,1,'child',100.00),
+(1,2,'regular',185.00),(1,2,'student',155.00),(1,2,'senior_citizen',148.00),(1,2,'pwd',148.00),(1,2,'child',100.00),
+(2,1,'regular',200.00),(2,1,'student',170.00),(2,1,'senior_citizen',160.00),(2,1,'pwd',160.00),(2,1,'child',110.00),
+(2,2,'regular',200.00),(2,2,'student',170.00),(2,2,'senior_citizen',160.00),(2,2,'pwd',160.00),(2,2,'child',110.00),
+(3,1,'regular',175.00),(3,1,'student',145.00),(3,1,'senior_citizen',140.00),(3,1,'pwd',140.00),(3,1,'child',90.00),
+(3,2,'regular',175.00),(3,2,'student',145.00),(3,2,'senior_citizen',140.00),(3,2,'pwd',140.00),(3,2,'child',90.00);
 
--- Cargo Rates
 INSERT INTO cargo_rates (shipping_line_id, cargo_type, rate_amount) VALUES
-(1, 'motorcycle', 250.00), (1, 'car', 900.00), (1, 'truck', 2500.00), (1, 'others', 150.00),
-(2, 'motorcycle', 280.00), (2, 'car', 950.00), (2, 'truck', 2700.00), (2, 'others', 180.00),
-(3, 'motorcycle', 230.00), (3, 'car', 850.00), (3, 'truck', 2300.00), (3, 'others', 130.00);
+(1,'motorcycle',250.00),(1,'car',900.00),(1,'truck',2500.00),(1,'others',150.00),
+(2,'motorcycle',280.00),(2,'car',950.00),(2,'truck',2700.00),(2,'others',180.00),
+(3,'motorcycle',230.00),(3,'car',850.00),(3,'truck',2300.00),(3,'others',130.00);
 
--- Default superadmin (password: admin123)
 INSERT INTO admins (full_name, email, password, role) VALUES
 ('Super Admin', 'admin@bantayanferry.com', '$2b$10$rQZ9uX1Hy2V.Kj5mN0pXeO8KLmP3qR7sT4vW6xY9zA1bC2dE5fG', 'superadmin');
