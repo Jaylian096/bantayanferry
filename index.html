@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Bantayan Ferry</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- SPLASH -->
+<div id="splash">
+  <div class="logo-wrap">
+    <div class="ferry-icon">⛴️</div>
+    <h1>Bantayan Ferry</h1>
+    <p>Your gateway to Bantayan Island</p>
+  </div>
+  <div class="wave">
+    <svg viewBox="0 0 1440 120" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+      <path d="M0,60 C240,100 480,20 720,60 C960,100 1200,20 1440,60 L1440,120 L0,120 Z" fill="rgba(255,255,255,0.1)"/>
+      <path d="M0,80 C360,40 720,120 1080,80 C1260,60 1380,90 1440,80 L1440,120 L0,120 Z" fill="rgba(255,255,255,0.15)"/>
+    </svg>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast" class="toast"></div>
+
+<!-- AUTH PAGE -->
+<div id="page-auth" class="page">
+  <div class="auth-screen">
+    <div class="auth-hero">
+      <div class="auth-icon">⛴️</div>
+      <h1>Bantayan Ferry</h1>
+      <p>Book your island trip with ease</p>
+    </div>
+    <div class="auth-card">
+      <div class="auth-tabs">
+        <button class="auth-tab active" id="tab-login">Sign In</button>
+        <button class="auth-tab" id="tab-register">Register</button>
+      </div>
+      <!-- Login Form -->
+      <form id="form-login">
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" id="login-email" class="form-control" placeholder="your@email.com" required>
+        </div>
+        <div class="form-group" style="margin-top:14px">
+          <label>Password</label>
+          <input type="password" id="login-password" class="form-control" placeholder="Enter password" required>
+        </div>
+        <button type="submit" id="btn-login" class="btn btn-primary" style="margin-top:20px">Sign In</button>
+      </form>
+      <!-- Register Form -->
+      <form id="form-register" class="hidden">
+        <div class="form-group">
+          <label>Full Name</label>
+          <input type="text" id="reg-name" class="form-control" placeholder="Juan dela Cruz" required>
+        </div>
+        <div class="form-group" style="margin-top:14px">
+          <label>Email Address</label>
+          <input type="email" id="reg-email" class="form-control" placeholder="your@email.com" required>
+        </div>
+        <div class="form-group" style="margin-top:14px">
+          <label>Contact Number</label>
+          <input type="tel" id="reg-contact" class="form-control" placeholder="09XX XXX XXXX">
+        </div>
+        <div class="form-group" style="margin-top:14px">
+          <label>Password</label>
+          <input type="password" id="reg-password" class="form-control" placeholder="Create password" required minlength="6">
+        </div>
+        <button type="submit" id="btn-register" class="btn btn-primary" style="margin-top:20px">Create Account</button>
+      </form>
+    </div>
+    <div class="auth-footer">Admin? <a href="admin.html">Go to Admin Panel →</a></div>
+  </div>
+</div>
+
+<!-- HOME PAGE -->
+<div id="page-home" class="page">
+  <div class="main-content">
+    <div class="home-hero">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start">
+        <div class="home-hero-text">
+          <h1 id="home-greeting">Welcome! 👋</h1>
+          <p>Where are you sailing today?</p>
+        </div>
+        <div class="hero-ship">⛴️</div>
+      </div>
+    </div>
+    <div class="home-cards">
+      <div class="action-card" onclick="document.getElementById('nav-schedules').click()">
+        <div class="card-icon blue">🗓️</div>
+        <div><h3>View Schedules</h3><p>Check ferry departure times</p></div>
+        <span class="arrow">›</span>
+      </div>
+      <div class="action-card" onclick="document.getElementById('nav-schedules').click()">
+        <div class="card-icon aqua">🎫</div>
+        <div><h3>Book a Ticket</h3><p>Reserve your seat now</p></div>
+        <span class="arrow">›</span>
+      </div>
+      <div class="action-card" onclick="document.getElementById('nav-bookings').click()">
+        <div class="card-icon teal">📋</div>
+        <div><h3>My Bookings</h3><p>View your reservations</p></div>
+        <span class="arrow">›</span>
+      </div>
+    </div>
+
+    <!-- Quick Info -->
+    <div class="section-header"><h3>Shipping Lines</h3></div>
+    <div style="padding:0 16px 20px;display:flex;flex-direction:column;gap:10px">
+      <div style="background:white;border-radius:12px;padding:14px 16px;box-shadow:var(--card-shadow);display:flex;align-items:center;gap:12px">
+        <span style="font-size:24px">🚢</span>
+        <div><div style="font-weight:700;font-size:14px">Island Shipping</div><div style="font-size:12px;color:var(--text-secondary)">Hagnaya ↔ Santa Fe</div></div>
+        <span style="margin-left:auto;font-size:12px;color:var(--success);font-weight:600">● Active</span>
+      </div>
+      <div style="background:white;border-radius:12px;padding:14px 16px;box-shadow:var(--card-shadow);display:flex;align-items:center;gap:12px">
+        <span style="font-size:24px">⛴️</span>
+        <div><div style="font-weight:700;font-size:14px">Super Shuttle Ferry</div><div style="font-size:12px;color:var(--text-secondary)">Hagnaya ↔ Santa Fe</div></div>
+        <span style="margin-left:auto;font-size:12px;color:var(--success);font-weight:600">● Active</span>
+      </div>
+      <div style="background:white;border-radius:12px;padding:14px 16px;box-shadow:var(--card-shadow);display:flex;align-items:center;gap:12px">
+        <span style="font-size:24px">🛳️</span>
+        <div><div style="font-weight:700;font-size:14px">Aznar Shipping</div><div style="font-size:12px;color:var(--text-secondary)">Hagnaya ↔ Santa Fe</div></div>
+        <span style="margin-left:auto;font-size:12px;color:var(--success);font-weight:600">● Active</span>
+      </div>
+    </div>
+  </div>
+  <!-- Bottom Nav -->
+  <nav class="bottom-nav">
+    <button class="nav-item active" id="nav-home"><span class="nav-icon">🏠</span><span class="nav-label">Home</span></button>
+    <button class="nav-item" id="nav-schedules"><span class="nav-icon">🗓️</span><span class="nav-label">Schedules</span></button>
+    <button class="nav-item" id="nav-bookings"><span class="nav-icon">🎫</span><span class="nav-label">Bookings</span></button>
+    <button class="nav-item" id="nav-profile"><span class="nav-icon">👤</span><span class="nav-label">Profile</span></button>
+  </nav>
+</div>
+
+<!-- SCHEDULES PAGE -->
+<div id="page-schedules" class="page">
+  <div class="app-header">
+    <h2>Ferry Schedules</h2>
+    <span style="font-size:20px">⛴️</span>
+  </div>
+  <div class="filter-bar">
+    <button class="filter-chip active" onclick="filterSchedules('all')">All Lines</button>
+    <button class="filter-chip" onclick="filterSchedules(1)">Island Shipping</button>
+    <button class="filter-chip" onclick="filterSchedules(2)">Super Shuttle</button>
+    <button class="filter-chip" onclick="filterSchedules(3)">Aznar</button>
+  </div>
+  <div class="main-content" style="padding-top:8px">
+    <div id="schedules-list" class="schedules-list"><div class="loading-spinner"><div class="spinner"></div></div></div>
+  </div>
+  <nav class="bottom-nav">
+    <button class="nav-item" id="nav-home"><span class="nav-icon">🏠</span><span class="nav-label">Home</span></button>
+    <button class="nav-item active" id="nav-schedules"><span class="nav-icon">🗓️</span><span class="nav-label">Schedules</span></button>
+    <button class="nav-item" id="nav-bookings"><span class="nav-icon">🎫</span><span class="nav-label">Bookings</span></button>
+    <button class="nav-item" id="nav-profile"><span class="nav-icon">👤</span><span class="nav-label">Profile</span></button>
+  </nav>
+</div>
+
+<!-- BOOKING FORM PAGE -->
+<div id="page-booking" class="page">
+  <div class="app-header">
+    <button class="header-back" onclick="router.navigate('page-schedules')">←</button>
+    <h2>Book Ticket</h2>
+    <span></span>
+  </div>
+  <!-- Schedule Summary -->
+  <div style="background:linear-gradient(135deg,var(--ocean-deep),var(--ocean-mid));padding:16px 20px;color:white">
+    <div style="font-size:11px;opacity:0.7;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px" id="book-line">Shipping Line</div>
+    <div style="font-size:20px;font-weight:700;font-family:'Sora',sans-serif" id="book-route">Route</div>
+    <div style="display:flex;gap:20px;margin-top:8px;font-size:13px;opacity:0.8">
+      <span>Departs: <strong id="book-depart"></strong></span>
+      <span>Arrives: <strong id="book-arrive"></strong></span>
+    </div>
+    <div style="font-size:12px;opacity:0.6;margin-top:4px" id="book-ship"></div>
+  </div>
+
+  <div class="main-content">
+    <form id="booking-form">
+      <input type="hidden" id="booking-schedule-id">
+      <div class="form-container">
+        <div class="form-group">
+          <label>Travel Date</label>
+          <input type="date" id="book-date" class="form-control" required>
+        </div>
+        <div class="form-group">
+          <label>Full Name</label>
+          <input type="text" id="book-name" class="form-control" placeholder="As per valid ID" required>
+        </div>
+        <div class="form-group">
+          <label>Contact Number</label>
+          <input type="tel" id="book-contact" class="form-control" placeholder="09XX XXX XXXX" required>
+        </div>
+        <div class="form-group">
+          <label>Passenger Type</label>
+          <div class="passenger-grid">
+            <button type="button" class="pax-btn selected" data-type="regular" onclick="selectPassengerType('regular')"><div class="pax-icon">👤</div><div class="pax-label">Regular</div></button>
+            <button type="button" class="pax-btn" data-type="student" onclick="selectPassengerType('student')"><div class="pax-icon">🎓</div><div class="pax-label">Student</div></button>
+            <button type="button" class="pax-btn" data-type="senior_citizen" onclick="selectPassengerType('senior_citizen')"><div class="pax-icon">👴</div><div class="pax-label">Senior</div></button>
+            <button type="button" class="pax-btn" data-type="pwd" onclick="selectPassengerType('pwd')"><div class="pax-icon">♿</div><div class="pax-label">PWD</div></button>
+            <button type="button" class="pax-btn" data-type="child" onclick="selectPassengerType('child')"><div class="pax-icon">👦</div><div class="pax-label">Child</div></button>
+          </div>
+        </div>
+      </div>
+      <!-- Fare Display -->
+      <div class="fare-display">
+        <div class="fare-label">Fare for <span id="fare-passenger-type">Regular</span></div>
+        <div class="fare-amount"><span id="fare-amount-display">185.00</span></div>
+        <div class="fare-sub" id="fare-loading" class="hidden">Calculating...</div>
+      </div>
+      <!-- Payment Info -->
+      <div class="payment-info" style="margin-top:16px">
+        <div class="pi-icon">💵</div>
+        <div>
+          <h4>Cash on Port</h4>
+          <p>Please pay at the port counter before boarding. Present your booking QR code to the staff.</p>
+        </div>
+      </div>
+      <div style="padding:16px">
+        <button type="submit" id="btn-book-submit" class="btn btn-primary">Confirm Booking</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- BOOKING SUCCESS PAGE -->
+<div id="page-booking-success" class="page">
+  <div class="app-header">
+    <h2>Booking Confirmed!</h2>
+    <span></span>
+  </div>
+  <div class="main-content" style="padding:20px 16px">
+    <div style="text-align:center;margin-bottom:24px">
+      <div style="font-size:64px">✅</div>
+      <h2 style="font-size:22px;font-weight:800;margin:12px 0 6px">You're all set!</h2>
+      <p style="color:var(--text-secondary);font-size:14px">Show your QR code at the port to board</p>
+    </div>
+    <div class="qr-container">
+      <img id="success-qr" alt="QR Code" style="width:200px;height:200px">
+      <h3 id="success-booking-code">BF-XXXXX</h3>
+      <p>Total Fare: <strong id="success-fare">₱0.00</strong></p>
+    </div>
+    <div class="payment-info" style="margin-top:16px">
+      <div class="pi-icon">💵</div>
+      <div><h4>Cash on Port</h4><p>Please pay at the port before boarding. Bring a valid ID for discounted fares.</p></div>
+    </div>
+    <div style="margin-top:16px;display:flex;flex-direction:column;gap:10px">
+      <button class="btn btn-primary" onclick="document.getElementById('nav-bookings').click()">View My Bookings</button>
+      <button class="btn btn-secondary" onclick="document.getElementById('nav-home').click()">Back to Home</button>
+    </div>
+  </div>
+</div>
+
+<!-- MY BOOKINGS PAGE -->
+<div id="page-bookings" class="page">
+  <div class="app-header">
+    <h2>My Bookings</h2>
+    <button class="header-action" onclick="loadMyBookings()">↻ Refresh</button>
+  </div>
+  <div class="main-content" style="padding-top:16px">
+    <div id="my-bookings-list"><div class="loading-spinner"><div class="spinner"></div></div></div>
+  </div>
+  <nav class="bottom-nav">
+    <button class="nav-item" id="nav-home"><span class="nav-icon">🏠</span><span class="nav-label">Home</span></button>
+    <button class="nav-item" id="nav-schedules"><span class="nav-icon">🗓️</span><span class="nav-label">Schedules</span></button>
+    <button class="nav-item active" id="nav-bookings"><span class="nav-icon">🎫</span><span class="nav-label">Bookings</span></button>
+    <button class="nav-item" id="nav-profile"><span class="nav-icon">👤</span><span class="nav-label">Profile</span></button>
+  </nav>
+</div>
+
+<!-- BOOKING DETAIL PAGE -->
+<div id="page-booking-detail" class="page">
+  <div class="app-header">
+    <button class="header-back" onclick="router.navigate('page-bookings');loadMyBookings()">←</button>
+    <h2>Booking Detail</h2>
+    <span></span>
+  </div>
+  <div class="main-content" style="padding:16px">
+    <div style="background:white;border-radius:var(--radius);box-shadow:var(--card-shadow);overflow:hidden;margin-bottom:16px">
+      <div style="background:var(--grey-100);padding:14px 16px;display:flex;justify-content:space-between;align-items:center">
+        <span style="font-weight:700;color:var(--ocean-mid);font-family:'Sora',sans-serif" id="detail-code">BF-XXXXX</span>
+        <span class="status-badge" id="detail-status">pending</span>
+      </div>
+      <div style="padding:16px">
+        <div style="font-size:18px;font-weight:700;margin-bottom:12px" id="detail-route">Route</div>
+        <table style="width:100%;min-width:unset">
+          <tr><td style="padding:6px 0;color:var(--text-secondary);font-size:13px;width:40%">Shipping Line</td><td style="font-size:13px;font-weight:500" id="detail-line"></td></tr>
+          <tr><td style="padding:6px 0;color:var(--text-secondary);font-size:13px">Ship</td><td style="font-size:13px;font-weight:500" id="detail-ship"></td></tr>
+          <tr><td style="padding:6px 0;color:var(--text-secondary);font-size:13px">Travel Date</td><td style="font-size:13px;font-weight:500" id="detail-date"></td></tr>
+          <tr><td style="padding:6px 0;color:var(--text-secondary);font-size:13px">Departure</td><td style="font-size:13px;font-weight:500" id="detail-depart"></td></tr>
+          <tr><td style="padding:6px 0;color:var(--text-secondary);font-size:13px">Arrival</td><td style="font-size:13px;font-weight:500" id="detail-arrive"></td></tr>
+          <tr><td style="padding:6px 0;color:var(--text-secondary);font-size:13px">Passenger</td><td style="font-size:13px;font-weight:500;text-transform:capitalize" id="detail-pax"></td></tr>
+          <tr><td style="padding:6px 0;color:var(--text-secondary);font-size:13px">Total Fare</td><td style="font-size:16px;font-weight:800;color:var(--ocean-mid)" id="detail-fare"></td></tr>
+        </table>
+      </div>
+    </div>
+    <div class="qr-container">
+      <p style="font-size:12px;color:var(--text-secondary);margin-bottom:12px">Show this QR code at the port</p>
+      <img id="detail-qr" alt="QR Code" style="width:200px;height:200px">
+    </div>
+    <div class="payment-info" style="margin-top:16px">
+      <div class="pi-icon">💵</div>
+      <div><h4>Cash on Port</h4><p>Please pay at the port counter before boarding.</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- PROFILE PAGE -->
+<div id="page-profile" class="page">
+  <div class="app-header">
+    <h2>My Profile</h2>
+    <span></span>
+  </div>
+  <div class="main-content" style="padding:24px 16px">
+    <div style="text-align:center;margin-bottom:28px">
+      <div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,var(--ocean-mid),var(--ocean-bright));display:flex;align-items:center;justify-content:center;font-size:36px;margin:0 auto 12px">👤</div>
+      <h2 style="font-size:20px;font-weight:800" id="profile-name">Loading...</h2>
+      <p style="color:var(--text-secondary);font-size:14px" id="profile-email"></p>
+    </div>
+    <div style="background:white;border-radius:var(--radius);box-shadow:var(--card-shadow);overflow:hidden;margin-bottom:20px">
+      <div style="padding:14px 16px;border-bottom:1px solid var(--grey-100);display:flex;justify-content:space-between">
+        <span style="color:var(--text-secondary);font-size:14px">Contact</span>
+        <span style="font-size:14px;font-weight:500" id="profile-contact">Not set</span>
+      </div>
+      <div style="padding:14px 16px;display:flex;justify-content:space-between">
+        <span style="color:var(--text-secondary);font-size:14px">Account Type</span>
+        <span style="font-size:14px;font-weight:500;color:var(--ocean-mid)">Passenger</span>
+      </div>
+    </div>
+    <div style="background:white;border-radius:var(--radius);box-shadow:var(--card-shadow);overflow:hidden;margin-bottom:20px">
+      <button onclick="document.getElementById('nav-bookings').click()" style="width:100%;padding:14px 16px;border:none;background:none;display:flex;align-items:center;gap:12px;cursor:pointer;font-family:inherit;border-bottom:1px solid var(--grey-100)">
+        <span>🎫</span><span style="font-size:14px;font-weight:500">My Bookings</span><span style="margin-left:auto;color:var(--grey-300)">›</span>
+      </button>
+      <button onclick="document.getElementById('nav-schedules').click()" style="width:100%;padding:14px 16px;border:none;background:none;display:flex;align-items:center;gap:12px;cursor:pointer;font-family:inherit">
+        <span>🗓️</span><span style="font-size:14px;font-weight:500">View Schedules</span><span style="margin-left:auto;color:var(--grey-300)">›</span>
+      </button>
+    </div>
+    <button class="btn btn-danger" onclick="logout()">Sign Out</button>
+  </div>
+  <nav class="bottom-nav">
+    <button class="nav-item" id="nav-home"><span class="nav-icon">🏠</span><span class="nav-label">Home</span></button>
+    <button class="nav-item" id="nav-schedules"><span class="nav-icon">🗓️</span><span class="nav-label">Schedules</span></button>
+    <button class="nav-item" id="nav-bookings"><span class="nav-icon">🎫</span><span class="nav-label">Bookings</span></button>
+    <button class="nav-item active" id="nav-profile"><span class="nav-icon">👤</span><span class="nav-label">Profile</span></button>
+  </nav>
+</div>
+
+<script src="js/api.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

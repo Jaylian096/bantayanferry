@@ -1,0 +1,10 @@
+const router = require('express').Router();
+const ctrl = require('../controllers/bookingController');
+const { verifyToken, verifyAdmin } = require('../middleware/auth');
+router.post('/', verifyToken, ctrl.createBooking);
+router.get('/my', verifyToken, ctrl.getUserBookings);
+router.get('/my/:id', verifyToken, ctrl.getBookingById);
+router.get('/', verifyAdmin, ctrl.getAllBookings);
+router.post('/verify', verifyAdmin, ctrl.verifyBooking);
+router.patch('/:id/cancel', verifyAdmin, ctrl.cancelBooking);
+module.exports = router;

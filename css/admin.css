@@ -1,0 +1,9 @@
+/* Admin-specific overrides */
+body { background: var(--grey-100); }
+.admin-content { max-width: 1200px; }
+@media (min-width: 768px) {
+  .admin-sidebar { left: 0 !important; }
+  .admin-main { margin-left: 260px; }
+  .menu-btn { display: none; }
+  .sidebar-overlay { display: none !important; }
+}
