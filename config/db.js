@@ -11,7 +11,7 @@ const pool = mysql.createPool({
   connectionLimit: 10,
   queueLimit: 0,
   ssl: {
-    rejectUnauthorized: false  // ← this is the fix for Railway
+    rejectUnauthorized: false
   }
 });
 
