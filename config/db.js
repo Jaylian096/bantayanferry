@@ -10,12 +10,22 @@ const pool = mysql.createPool({
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0,
+  enableKeepAlive: true,
+  keepAliveInitialDelay: 0,
+  connectTimeout: 60000,
   ssl: {
     rejectUnauthorized: false
   }
 });
 
 const db = pool.promise();
+
+// Keep-alive ping every 5 minutes to prevent Railway from closing the connection
+setInterval(() => {
+  db.query('SELECT 1')
+    .then(() => console.log('🔄 DB keep-alive ping OK'))
+    .catch(err => console.error('❌ DB keep-alive failed:', err.message));
+}, 5 * 60 * 1000);
 
 // Test connection on startup
 db.query('SELECT 1')
