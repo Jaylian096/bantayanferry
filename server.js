@@ -4,11 +4,11 @@ const path = require('path');
 require('dotenv').config();
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000; // Render will provide the HTTP port
 
 // Middleware
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 
 // API Routes
@@ -18,12 +18,12 @@ app.use('/api/bookings', require('./routes/bookings'));
 app.use('/api/admin', require('./routes/admin'));
 
 // Health check
-app.get('/api/health', (req, res) =>
-  res.json({ status: 'OK', message: 'Bantayan Ferry API is running' })
-);
+app.get('/api/health', (req, res) => {
+  res.json({ status: 'OK', message: 'Bantayan Ferry API is running' });
+});
 
 // Serve frontend from www folder
-const frontendPath = path.join(__dirname, 'www'); // www folder in project root
+const frontendPath = path.join(__dirname, 'www');
 app.use(express.static(frontendPath));
 
 // Root route serves index.html
@@ -31,16 +31,17 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(frontendPath, 'index.html'));
 });
 
-// Admin page
+// Route for admin.html
 app.get('/admin', (req, res) => {
   res.sendFile(path.join(frontendPath, 'admin.html'));
 });
 
-// Catch-all route (for SPA routing)
+// Catch-all for SPA routing (optional)
 app.get('*', (req, res) => {
   res.sendFile(path.join(frontendPath, 'index.html'));
 });
 
-app.listen(PORT, () => 
-  console.log(`🚢 Bantayan Ferry API running on port ${PORT}`)
-);
+// Start server
+app.listen(PORT, () => {
+  console.log(`🚢 Bantayan Ferry API running on port ${PORT}`);
+});
